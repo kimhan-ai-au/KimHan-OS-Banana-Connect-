@@ -1,4 +1,4 @@
-# 🏛️ KiHan_OS: Global Deterministic Domain
+# 🏛️ KiMHan_OS: Global Deterministic Domain
 **Axiom:** NCT (Non-probabilistic Core Truth)  
 **Engine:** PSF-QTM (Prime Staircase Function - Quantum Recursive Time Layer)  
 **Optimization:** 1-bit TurboQuant
