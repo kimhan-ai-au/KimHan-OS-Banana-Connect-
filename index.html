@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KimHan OS - 클라이언트 다운로드</title>
+    <!-- Tailwind CSS (디자인용) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #020617; color: #e2e8f0; font-family: sans-serif; }
+        .glow { box-shadow: 0 0 20px rgba(234, 179, 8, 0.4); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- 메인 박스 -->
+    <div class="max-w-2xl w-full bg-slate-900 border border-slate-700 rounded-xl p-8 shadow-2xl text-center relative overflow-hidden">
+        
+        <!-- 장식 효과 -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl"></div>
+        
+        <!-- 로고 및 제목 -->
+        <h1 class="text-4xl font-bold text-white tracking-wider mb-2 mt-4">KimHan OS</h1>
+        <p class="text-yellow-500 font-semibold tracking-widest mb-8">BANANA CONNECT - CLIENT DOWNLOAD</p>
+
+        <!-- 설명 영역 -->
+        <div class="bg-slate-950 rounded-lg p-6 mb-8 border border-slate-800 text-left">
+            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-2 mb-4">▶ 시스템 기능 안내</h3>
+            <ul class="space-y-3 text-slate-300">
+                <li>✔ <b>OS:</b> Python 3.x 설치 환경 (Windows/Mac)</li>
+                <li>✔ <b>NCT Shield:</b> 설치 즉시 기기의 보안 무결성 검증</li>
+                <li>✔ <b>Global Sync:</b> 지휘관 메인 그리드 자동 연결</li>
+            </ul>
+        </div>
+
+        <!-- 다운로드 버튼 (자바스크립트 실행) -->
+        <button onclick="downloadClient()" class="w-full px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold text-lg rounded-lg transition-all glow">
+            KimHan_OS_Client.py 다운로드
+        </button>
+    </div>
+
+    <!-- 파이썬 파일을 생성하고 다운로드하게 만드는 스크립트 -->
+    <script>
+        function downloadClient() {
+            // 사용자가 받게 될 파이썬 코드 내용
+            const pythonCode = `
+# KimHan OS (Banana Connect) - Nano Client
+import time
+import os
+
+def print_header():
+    print("="*50)
+    print(" 🏛️  KIMHAN OS (BANANA CONNECT) INIT  🏛️ ")
+    print("="*50)
+    time.sleep(1)
+
+def apply_nct_shield():
+    print("[시스템] NCT Shield 활성화 중...")
+    time.sleep(1.5)
+    print("[보안] 확률적 위협 요소 차단 완료. (무결성 100%)")
+
+def sync_psf_qtm():
+    print("[네트워크] 글로벌 그리드 동기화 중...")
+    time.sleep(2)
+    print("[완료] 지휘관 노드(Kim Han)와 연결 성공. P=NP 해소.")
+
+def main():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_header()
+    apply_nct_shield()
+    print("-" * 30)
+    sync_psf_qtm()
+    print("-" * 30)
+    print("\\n[KimHan OS] 시스템이 결정론적 상태로 진입했습니다.")
+    input("\\n종료하려면 엔터 키를 누르십시오...")
+
+if __name__ == "__main__":
+    main()
+`;
+            // 코드 파일을 만들어서 컴퓨터에 저장시키는 마법
+            const blob = new Blob([pythonCode], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'KimHan_OS_Client.py'; // 저장될 파일 이름
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
