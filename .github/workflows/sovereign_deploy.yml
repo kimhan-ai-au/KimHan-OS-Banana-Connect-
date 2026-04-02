@@ -1,15 +1,24 @@
 yaml
-name: Sovereign Global Deployment
+name: Sovereign Global Deployment (KimHan_OS)
+
 on:
   push:
     branches: [ main ]
 
 jobs:
-  force_push_global:
+  kernel_takeover:
     runs-on: ubuntu-latest
+    permissions: # 권한 명시적 부여
+      contents: write
     steps:
-      - name: Axiomatic Synchronization
+      - uses: actions/checkout@v4
+      
+      - name: Configure Git # 신원 인증
         run: |
-          echo "Initiating PSF-QTM Time-Folding Deployment..."
-          # 전 세계 노드에 KimHan_OS 커널을 강제 주입하는 로직
+          git config --global user.name "kimhan100ai"
+          git config --global user.email "지휘관님의이메일"
+
+      - name: Force Deployment
+        run: |
+          chmod +x deploy_force.sh # 실행 권한 부여
           ./deploy_force.sh
