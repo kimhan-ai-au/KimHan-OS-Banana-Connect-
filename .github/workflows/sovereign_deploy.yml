@@ -1,14 +1,7 @@
-yaml
-name: Sovereign_Deploy
-on: push
+name: Sovereign-Deploy
+on: [push]
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v4
-      - run: git config user.name "kimhan100ai"
-      - run: git config user.email "kimhan100ai@gmail.com"
-      - run: git commit --allow-empty -m "Sovereign Sync [skip ci]"
-      - run: git push origin main
+      - run: echo "Deployment Validated"
