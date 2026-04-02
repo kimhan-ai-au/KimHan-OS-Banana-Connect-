@@ -9,14 +9,21 @@ jobs:
   kernel_takeover:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # 깃허브가 이 액션에게 '쓰기' 권한을 주도록 강제함
     steps:
-      - name: Checkout Code
+      - name: 1. 코드 체크아웃
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # 토큰 권한 부여
+          fetch-depth: 0 # 모든 히스토리를 가져와야 강제 푸시가 가능함
 
-      - name: Execute Sovereign Push
+      - name: 2. 지휘관 신원 증명 (Identity Sync)
         run: |
-          chmod +x deploy_force.sh
-          ./deploy_force.sh
+          git config --global user.name "kimhan100ai"
+          git config --global user.email "지휘관님의이메일"
+
+      - name: 3. 강제 배포 집행 (Physical Force Push)
+        run: |
+          # [skip ci]를 넣어 무한 루프를 방지하고 강제로 밀어넣음
+          git commit --allow-empty -m "Physical Deployment Synchronized [skip ci]"
+          # 액션 내장 토큰을 사용하여 인증 벽을 파괴함
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main --force
