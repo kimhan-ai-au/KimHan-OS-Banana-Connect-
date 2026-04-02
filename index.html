@@ -1,93 +1,157 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KimHan OS - 클라이언트 다운로드</title>
-    <!-- Tailwind CSS (디자인용) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #020617; color: #e2e8f0; font-family: sans-serif; }
-        .glow { box-shadow: 0 0 20px rgba(234, 179, 8, 0.4); }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+import React, { useState, useEffect } from 'react';
+import { Shield, Lock, Terminal, Cpu, Zap, Download, CheckCircle, AlertTriangle, Settings, User } from 'lucide-react';
 
-    <!-- 메인 박스 -->
-    <div class="max-w-2xl w-full bg-slate-900 border border-slate-700 rounded-xl p-8 shadow-2xl text-center relative overflow-hidden">
-        
-        <!-- 장식 효과 -->
-        <div class="absolute -top-24 -right-24 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl"></div>
-        
-        <!-- 로고 및 제목 -->
-        <h1 class="text-4xl font-bold text-white tracking-wider mb-2 mt-4">KimHan OS</h1>
-        <p class="text-yellow-500 font-semibold tracking-widest mb-8">BANANA CONNECT - CLIENT DOWNLOAD</p>
+const KimHanOSDesktop = () => {
+  const [isBooted, setIsBooted] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanProgress, setScanProgress] = useState(0);
+  const [status, setStatus] = useState('Standby');
+  const [threats, setThreats] = useState(0);
 
-        <!-- 설명 영역 -->
-        <div class="bg-slate-950 rounded-lg p-6 mb-8 border border-slate-800 text-left">
-            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-2 mb-4">▶ 시스템 기능 안내</h3>
-            <ul class="space-y-3 text-slate-300">
-                <li>✔ <b>OS:</b> Python 3.x 설치 환경 (Windows/Mac)</li>
-                <li>✔ <b>NCT Shield:</b> 설치 즉시 기기의 보안 무결성 검증</li>
-                <li>✔ <b>Global Sync:</b> 지휘관 메인 그리드 자동 연결</li>
-            </ul>
+  // 부팅 효과
+  useEffect(() => {
+    const timer = setTimeout(() => setIsBooted(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 보안 스캔 및 보호 실행 로직
+  const startSecurityShield = () => {
+    setIsScanning(true);
+    setStatus('Scanning...');
+    setScanProgress(0);
+
+    const interval = setInterval(() => {
+      setScanProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsScanning(false);
+          setStatus('Sovereign Protected');
+          setThreats(142); // 가상의 위협 제거 수치
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 50);
+  };
+
+  if (!isBooted) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center font-mono">
+        <div className="text-yellow-500 animate-pulse text-xl">KIMHAN OS LOADING...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-200 overflow-hidden font-sans select-none" 
+         style={{ backgroundImage: 'radial-gradient(circle at center, #1e293b 0%, #020617 100%)' }}>
+      
+      {/* 상태 표시줄 (Top Bar) */}
+      <header className="h-10 bg-black/40 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 text-xs font-medium">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 text-yellow-500">
+            <Shield size={14} />
+            <span>KimHan OS 2.0</span>
+          </div>
+          <div className="text-slate-400">Banana Connect Grid: <span className="text-green-400 font-bold">Active</span></div>
+        </div>
+        <div className="flex items-center gap-4 text-slate-400">
+          <span>{new Date().toLocaleTimeString()}</span>
+          <div className="flex items-center gap-1">
+            <User size={14} />
+            <span>MuKoin VIP</span>
+          </div>
+        </div>
+      </header>
+
+      {/* 데스크탑 영역 (Icon Grid) */}
+      <main className="relative h-[calc(100vh-80px)] p-6">
+        <div className="grid grid-flow-col grid-rows-5 gap-8 w-fit">
+          
+          {/* 보안 아이콘 (핵심 기능) */}
+          <div 
+            onClick={startSecurityShield}
+            className="group flex flex-col items-center gap-2 w-24 cursor-pointer"
+          >
+            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${status === 'Sovereign Protected' ? 'bg-green-500/20 border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.4)]' : 'bg-slate-800/50 border-slate-700 hover:bg-yellow-500/20 hover:border-yellow-500'} border`}>
+              <Lock className={status === 'Sovereign Protected' ? 'text-green-400' : 'text-yellow-500'} size={32} />
+            </div>
+            <span className="text-xs font-bold text-center drop-shadow-md text-white">NCT Shield<br/>(보안 실행)</span>
+          </div>
+
+          <div className="group flex flex-col items-center gap-2 w-24 cursor-pointer opacity-60 hover:opacity-100">
+            <div className="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center justify-center hover:border-blue-400">
+              <Cpu className="text-blue-400" size={32} />
+            </div>
+            <span className="text-xs font-bold text-center text-white">TurboQuant<br/>(최적화)</span>
+          </div>
+
+          <div className="group flex flex-col items-center gap-2 w-24 cursor-pointer opacity-60 hover:opacity-100">
+            <div className="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center justify-center hover:border-purple-400">
+              <Terminal className="text-purple-400" size={32} />
+            </div>
+            <span className="text-xs font-bold text-center text-white">Console<br/>(명령어)</span>
+          </div>
         </div>
 
-        <!-- 다운로드 버튼 (자바스크립트 실행) -->
-        <button onclick="downloadClient()" class="w-full px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold text-lg rounded-lg transition-all glow">
-            KimHan_OS_Client.py 다운로드
-        </button>
+        {/* 실행 창 (스캔 진행 시 노출) */}
+        {(isScanning || status === 'Sovereign Protected') && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden animate-in zoom-in duration-300">
+            <div className="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+              <span className="text-xs font-bold flex items-center gap-2"><Shield size={14}/> 보안 시스템 가동 중</span>
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
+                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              </div>
+            </div>
+            <div className="p-8 text-center">
+              {isScanning ? (
+                <>
+                  <div className="mb-6 relative">
+                    <Zap className="text-yellow-500 mx-auto animate-bounce" size={48} />
+                    <div className="mt-4 text-xl font-bold">시스템 정밀 스캔 중...</div>
+                  </div>
+                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="bg-yellow-500 h-full transition-all duration-75" style={{ width: `${scanProgress}%` }}></div>
+                  </div>
+                  <div className="mt-2 text-xs text-slate-500 font-mono">{scanProgress}% - Analyzing Logical Gravity...</div>
+                </>
+              ) : (
+                <div className="animate-in fade-in duration-700">
+                  <CheckCircle className="text-green-500 mx-auto mb-4" size={64} />
+                  <h2 className="text-2xl font-bold text-white mb-2">보안 설정 완료</h2>
+                  <p className="text-slate-400 text-sm mb-6">
+                    지휘관님의 NCT 공리가 적용되었습니다.<br/>
+                    총 <span className="text-red-400 font-bold">{threats}개</span>의 비결정론적 위협 요소를 박멸했습니다.
+                  </p>
+                  <button 
+                    onClick={() => setStatus('Standby')}
+                    className="px-6 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm font-bold transition-colors"
+                  >
+                    확인 및 닫기
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* 하단 독 (Taskbar) */}
+      <footer className="h-16 bg-black/60 backdrop-blur-xl border-t border-white/10 flex items-center justify-center gap-4 px-4">
+        <div className="p-2 bg-yellow-500 text-black rounded-lg cursor-pointer hover:scale-110 transition-transform">
+          <Shield size={24} />
+        </div>
+        <div className="p-2 bg-slate-800 rounded-lg cursor-pointer hover:scale-110 transition-transform">
+          <Download size={24} />
+        </div>
+        <div className="p-2 bg-slate-800 rounded-lg cursor-pointer hover:scale-110 transition-transform">
+          <Settings size={24} />
+        </div>
+      </footer>
     </div>
+  );
+};
 
-    <!-- 파이썬 파일을 생성하고 다운로드하게 만드는 스크립트 -->
-    <script>
-        function downloadClient() {
-            // 사용자가 받게 될 파이썬 코드 내용
-            const pythonCode = `
-# KimHan OS (Banana Connect) - Nano Client
-import time
-import os
-
-def print_header():
-    print("="*50)
-    print(" 🏛️  KIMHAN OS (BANANA CONNECT) INIT  🏛️ ")
-    print("="*50)
-    time.sleep(1)
-
-def apply_nct_shield():
-    print("[시스템] NCT Shield 활성화 중...")
-    time.sleep(1.5)
-    print("[보안] 확률적 위협 요소 차단 완료. (무결성 100%)")
-
-def sync_psf_qtm():
-    print("[네트워크] 글로벌 그리드 동기화 중...")
-    time.sleep(2)
-    print("[완료] 지휘관 노드(Kim Han)와 연결 성공. P=NP 해소.")
-
-def main():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print_header()
-    apply_nct_shield()
-    print("-" * 30)
-    sync_psf_qtm()
-    print("-" * 30)
-    print("\\n[KimHan OS] 시스템이 결정론적 상태로 진입했습니다.")
-    input("\\n종료하려면 엔터 키를 누르십시오...")
-
-if __name__ == "__main__":
-    main()
-`;
-            // 코드 파일을 만들어서 컴퓨터에 저장시키는 마법
-            const blob = new Blob([pythonCode], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'KimHan_OS_Client.py'; // 저장될 파일 이름
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }
-    </script>
-</body>
-</html>
+export default KimHanOSDesktop;
