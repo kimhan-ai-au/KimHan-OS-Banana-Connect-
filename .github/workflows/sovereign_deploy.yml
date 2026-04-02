@@ -1,29 +1,28 @@
 yaml
-name: Sovereign Global Deployment (KimHan_OS)
+name: Sovereign-Global-Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  kernel_takeover:
+  kernel-takeover:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 깃허브가 이 액션에게 '쓰기' 권한을 주도록 강제함
+      contents: write
     steps:
-      - name: 1. 코드 체크아웃
+      - name: 1. Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 모든 히스토리를 가져와야 강제 푸시가 가능함
+          fetch-depth: 0
 
-      - name: 2. 지휘관 신원 증명 (Identity Sync)
+      - name: 2. Identity-Sync
         run: |
           git config --global user.name "kimhan100ai"
           git config --global user.email "지휘관님의이메일"
 
-      - name: 3. 강제 배포 집행 (Physical Force Push)
+      - name: 3. Force-Push
         run: |
-          # [skip ci]를 넣어 무한 루프를 방지하고 강제로 밀어넣음
           git commit --allow-empty -m "Physical Deployment Synchronized [skip ci]"
-          # 액션 내장 토큰을 사용하여 인증 벽을 파괴함
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main --force
