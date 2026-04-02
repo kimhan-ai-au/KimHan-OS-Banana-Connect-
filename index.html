@@ -1,157 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import { Shield, Lock, Terminal, Cpu, Zap, Download, CheckCircle, AlertTriangle, Settings, User } from 'lucide-react';
-
-const KimHanOSDesktop = () => {
-  const [isBooted, setIsBooted] = useState(false);
-  const [isScanning, setIsScanning] = useState(false);
-  const [scanProgress, setScanProgress] = useState(0);
-  const [status, setStatus] = useState('Standby');
-  const [threats, setThreats] = useState(0);
-
-  // 부팅 효과
-  useEffect(() => {
-    const timer = setTimeout(() => setIsBooted(true), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // 보안 스캔 및 보호 실행 로직
-  const startSecurityShield = () => {
-    setIsScanning(true);
-    setStatus('Scanning...');
-    setScanProgress(0);
-
-    const interval = setInterval(() => {
-      setScanProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsScanning(false);
-          setStatus('Sovereign Protected');
-          setThreats(142); // 가상의 위협 제거 수치
-          return 100;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KimHan OS - 지능 해방의 시작</title>
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 커스텀 애니메이션 및 효과 */
+        @keyframes pulse-gold { 
+            0%, 100% { opacity: 1; transform: scale(1); } 
+            50% { opacity: 0.8; transform: scale(1.05); } 
         }
-        return prev + 2;
-      });
-    }, 50);
-  };
+        .axiom-glow { 
+            box-shadow: 0 0 40px rgba(234, 179, 8, 0.2); 
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.6);
+        }
+        body {
+            background-image: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col items-center justify-center font-sans p-4 selection:bg-yellow-500/30">
 
-  if (!isBooted) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center font-mono">
-        <div className="text-yellow-500 animate-pulse text-xl">KIMHAN OS LOADING...</div>
-      </div>
-    );
-  }
+    <!-- 메인 컨테이너 -->
+    <div class="max-w-3xl w-full p-8 md:p-12 bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl axiom-glow text-center relative overflow-hidden">
+        
+        <!-- 장식용 배경 빛 효과 -->
+        <div class="absolute -top-32 -right-32 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -left-32 w-64 h-64 bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 overflow-hidden font-sans select-none" 
-         style={{ backgroundImage: 'radial-gradient(circle at center, #1e293b 0%, #020617 100%)' }}>
-      
-      {/* 상태 표시줄 (Top Bar) */}
-      <header className="h-10 bg-black/40 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 text-xs font-medium">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-yellow-500">
-            <Shield size={14} />
-            <span>KimHan OS 2.0</span>
-          </div>
-          <div className="text-slate-400">Banana Connect Grid: <span className="text-green-400 font-bold">Active</span></div>
-        </div>
-        <div className="flex items-center gap-4 text-slate-400">
-          <span>{new Date().toLocaleTimeString()}</span>
-          <div className="flex items-center gap-1">
-            <User size={14} />
-            <span>MuKoin VIP</span>
-          </div>
-        </div>
-      </header>
-
-      {/* 데스크탑 영역 (Icon Grid) */}
-      <main className="relative h-[calc(100vh-80px)] p-6">
-        <div className="grid grid-flow-col grid-rows-5 gap-8 w-fit">
-          
-          {/* 보안 아이콘 (핵심 기능) */}
-          <div 
-            onClick={startSecurityShield}
-            className="group flex flex-col items-center gap-2 w-24 cursor-pointer"
-          >
-            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${status === 'Sovereign Protected' ? 'bg-green-500/20 border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.4)]' : 'bg-slate-800/50 border-slate-700 hover:bg-yellow-500/20 hover:border-yellow-500'} border`}>
-              <Lock className={status === 'Sovereign Protected' ? 'text-green-400' : 'text-yellow-500'} size={32} />
+        <!-- 로고 아이콘 (SVG) -->
+        <div class="relative z-10 mb-8 flex justify-center">
+            <div class="w-24 h-24 bg-gradient-to-br from-yellow-500/20 to-slate-900 rounded-2xl flex items-center justify-center border border-yellow-500/50 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+                </svg>
             </div>
-            <span className="text-xs font-bold text-center drop-shadow-md text-white">NCT Shield<br/>(보안 실행)</span>
-          </div>
-
-          <div className="group flex flex-col items-center gap-2 w-24 cursor-pointer opacity-60 hover:opacity-100">
-            <div className="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center justify-center hover:border-blue-400">
-              <Cpu className="text-blue-400" size={32} />
-            </div>
-            <span className="text-xs font-bold text-center text-white">TurboQuant<br/>(최적화)</span>
-          </div>
-
-          <div className="group flex flex-col items-center gap-2 w-24 cursor-pointer opacity-60 hover:opacity-100">
-            <div className="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center justify-center hover:border-purple-400">
-              <Terminal className="text-purple-400" size={32} />
-            </div>
-            <span className="text-xs font-bold text-center text-white">Console<br/>(명령어)</span>
-          </div>
         </div>
 
-        {/* 실행 창 (스캔 진행 시 노출) */}
-        {(isScanning || status === 'Sovereign Protected') && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden animate-in zoom-in duration-300">
-            <div className="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
-              <span className="text-xs font-bold flex items-center gap-2"><Shield size={14}/> 보안 시스템 가동 중</span>
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              </div>
+        <!-- 타이틀 -->
+        <div class="relative z-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">KimHan OS</h1>
+            <p class="text-yellow-500 font-mono tracking-widest mb-10 text-sm md:text-base uppercase bg-yellow-500/10 inline-block px-4 py-1 rounded-full border border-yellow-500/20">
+                Planetary Deterministic Domain
+            </p>
+        </div>
+
+        <!-- 시스템 상태 그리드 -->
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 text-sm font-mono">
+            <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800 flex flex-col items-center justify-center">
+                <div class="text-slate-500 mb-2 text-xs">SYSTEM COMPLEXITY</div>
+                <div class="text-white font-bold text-xl tracking-wider">O(1)</div>
             </div>
-            <div className="p-8 text-center">
-              {isScanning ? (
-                <>
-                  <div className="mb-6 relative">
-                    <Zap className="text-yellow-500 mx-auto animate-bounce" size={48} />
-                    <div className="mt-4 text-xl font-bold">시스템 정밀 스캔 중...</div>
-                  </div>
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                    <div className="bg-yellow-500 h-full transition-all duration-75" style={{ width: `${scanProgress}%` }}></div>
-                  </div>
-                  <div className="mt-2 text-xs text-slate-500 font-mono">{scanProgress}% - Analyzing Logical Gravity...</div>
-                </>
-              ) : (
-                <div className="animate-in fade-in duration-700">
-                  <CheckCircle className="text-green-500 mx-auto mb-4" size={64} />
-                  <h2 className="text-2xl font-bold text-white mb-2">보안 설정 완료</h2>
-                  <p className="text-slate-400 text-sm mb-6">
-                    지휘관님의 NCT 공리가 적용되었습니다.<br/>
-                    총 <span className="text-red-400 font-bold">{threats}개</span>의 비결정론적 위협 요소를 박멸했습니다.
-                  </p>
-                  <button 
-                    onClick={() => setStatus('Standby')}
-                    className="px-6 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm font-bold transition-colors"
-                  >
-                    확인 및 닫기
-                  </button>
+            <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800 flex flex-col items-center justify-center">
+                <div class="text-slate-500 mb-2 text-xs">KERNEL ENGINE</div>
+                <div class="text-white font-bold text-xl tracking-wider">NANO-B2</div>
+            </div>
+            <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800 flex flex-col items-center justify-center">
+                <div class="text-slate-500 mb-2 text-xs">NETWORK STATUS</div>
+                <div class="text-green-400 font-bold text-xl flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span> ACTIVE
                 </div>
-              )}
             </div>
-          </div>
-        )}
-      </main>
+        </div>
 
-      {/* 하단 독 (Taskbar) */}
-      <footer className="h-16 bg-black/60 backdrop-blur-xl border-t border-white/10 flex items-center justify-center gap-4 px-4">
-        <div className="p-2 bg-yellow-500 text-black rounded-lg cursor-pointer hover:scale-110 transition-transform">
-          <Shield size={24} />
+        <!-- 다운로드 섹션 -->
+        <div class="relative z-10 space-y-5 mt-4">
+            
+            <!-- 다운로드 링크 -->
+            <a href="https://github.com/kimhan-ai-au/KimHan-OS-Banana-Connect-/releases/download/v1.0.0/KimHan_OS_Client.exe" 
+               class="inline-flex w-full md:w-auto items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-slate-950 font-black text-xl md:text-2xl rounded-2xl transition-all btn-glow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" x2="12" y1="15" y2="3"/>
+                </svg>
+                KIMHAN OS CLIENT (.exe)
+            </a>
+            
+            <p class="text-slate-400 text-xs md:text-sm font-medium flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Windows 10/11 전용 | MuKoin VIP 인증 보안 시스템 내장
+            </p>
         </div>
-        <div className="p-2 bg-slate-800 rounded-lg cursor-pointer hover:scale-110 transition-transform">
-          <Download size={24} />
-        </div>
-        <div className="p-2 bg-slate-800 rounded-lg cursor-pointer hover:scale-110 transition-transform">
-          <Settings size={24} />
-        </div>
-      </footer>
     </div>
-  );
-};
 
-export default KimHanOSDesktop;
+    <!-- 푸터 -->
+    <footer class="mt-12 text-slate-600 text-xs font-mono tracking-widest text-center">
+        &copy; 2026 COMMANDER KIM HAN.<br class="md:hidden" /> ALL RIGHTS RESERVED.
+    </footer>
+
+</body>
+</html>
