@@ -1,28 +1,14 @@
 yaml
-name: Sovereign-Global-Deployment
-
-on:
-  push:
-    branches:
-      - main
-
+name: Sovereign_Deploy
+on: push
 jobs:
-  kernel-takeover:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: 1. Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 2. Identity-Sync
-        run: |
-          git config --global user.name "kimhan100ai"
-          git config --global user.email "지휘관님의이메일"
-
-      - name: 3. Force-Push
-        run: |
-          git commit --allow-empty -m "Physical Deployment Synchronized [skip ci]"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main --force
+      - uses: actions/checkout@v4
+      - run: git config user.name "kimhan100ai"
+      - run: git config user.email "kimhan100ai@gmail.com"
+      - run: git commit --allow-empty -m "Sovereign Sync [skip ci]"
+      - run: git push origin main
