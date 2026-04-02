@@ -8,17 +8,15 @@ on:
 jobs:
   kernel_takeover:
     runs-on: ubuntu-latest
-    permissions: # 권한 명시적 부여
+    permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Configure Git # 신원 인증
-        run: |
-          git config --global user.name "kimhan100ai"
-          git config --global user.email "지휘관님의이메일"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # 토큰 권한 부여
 
-      - name: Force Deployment
+      - name: Execute Sovereign Push
         run: |
-          chmod +x deploy_force.sh # 실행 권한 부여
+          chmod +x deploy_force.sh
           ./deploy_force.sh
